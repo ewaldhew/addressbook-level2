@@ -34,6 +34,15 @@ public class StorageFile {
      */
 
     /**
+     * Signals that the given file is read-only.
+     */
+    public static class FileReadOnlyException extends StorageOperationException {
+        public FileReadOnlyException(String message) {
+            super(message);
+        }
+    }
+
+    /**
      * Signals that the given file path does not fulfill the storage filepath constraints.
      */
     public static class InvalidStorageFilePathException extends IllegalValueException {
@@ -106,7 +115,11 @@ public class StorageFile {
             marshaller.marshal(toSave, fileWriter);
 
         } catch (IOException ioe) {
-            throw new StorageOperationException("Error writing to file: " + path);
+            if (ioe.getMessage().contains("Access is denied")) {
+                throw new FileReadOnlyException("WARNING: File " + path + " is read only! Changes are not saved.");
+            } else {
+                throw new StorageOperationException("Error writing to file: " + path);
+            }
         } catch (JAXBException jaxbe) {
             throw new StorageOperationException("Error converting address book into storage format");
         }
