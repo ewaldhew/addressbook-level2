@@ -87,6 +87,7 @@ public class Main {
             CommandResult result = executeCommand(command);
             recordResult(result);
             ui.showResultToUser(result);
+            saveChanges();
 
         } while (!ExitCommand.isExit(command));
     }
@@ -109,8 +110,21 @@ public class Main {
         try {
             command.setData(addressBook, lastShownList);
             CommandResult result = command.execute();
-            storage.save(addressBook);
             return result;
+        } catch (Exception e) {
+            ui.showToUser(e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Save address book changes to disk
+     */
+    private void saveChanges() {
+        try {
+            storage.save(addressBook);
+        } catch (StorageFile.FileReadOnlyException froe) {
+            ui.showToUser(froe.getMessage());
         } catch (Exception e) {
             ui.showToUser(e.getMessage());
             throw new RuntimeException(e);
