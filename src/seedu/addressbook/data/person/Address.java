@@ -15,10 +15,10 @@ public class Address {
     public static final String MESSAGE_ADDRESS_CONSTRAINTS = "Addresses are comma-separated fields consisting of the "
             + "following: BLOCK, STREET, UNIT, POSTAL_CODE\n"
             + " BLOCK is a number with optional letter suffix,\n"
-            + " STREET has no constraints,\n"
+            + " STREET is a string not containing commas,\n"
             + " UNIT is a number,\n"
             + " POSTAL_CODE is a six-digit number.";
-    public static final String ADDRESS_VALIDATION_REGEX = "^(?<block>\\d+\\w*)?(?:, | )?"
+    public static final String ADDRESS_VALIDATION_REGEX = "^(?<block>[\\d\\w]\\d*\\w*)?(?:, | )?"
             + "(?<street>[^,]+)?(?:, |$)"
             + "(?<unit>[#0-9-]+)?(?:, )?"
             + "(?<postcode>\\d{6})?";
