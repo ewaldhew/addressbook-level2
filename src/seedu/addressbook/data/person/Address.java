@@ -2,6 +2,9 @@ package seedu.addressbook.data.person;
 
 import seedu.addressbook.data.exception.IllegalValueException;
 
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
 /**
  * Represents a Person's address in the address book.
  * Guarantees: immutable; is valid as declared in {@link #isValidAddress(String)}
@@ -15,8 +18,12 @@ public class Address {
             + " STREET has no constraints,\n"
             + " UNIT is a number,\n"
             + " POSTAL_CODE is a six-digit number.";
-    public static final String ADDRESS_VALIDATION_REGEX = "\\d+\\w*, .+, [#0-9-]+, \\d{6}";
+    public static final String ADDRESS_VALIDATION_REGEX = "^(?<block>\\d+\\w*)?(?:, | )?"
+            + "(?<street>[^,]+)?(?:, |$)"
+            + "(?<unit>[#0-9-]+)?(?:, )?"
+            + "(?<postcode>\\d{6})?";
 
+    private static final Pattern ADDRESS_FORMAT = Pattern.compile(ADDRESS_VALIDATION_REGEX);
     private final Block block;
     private final Street street;
     private final Unit unit;
@@ -29,15 +36,17 @@ public class Address {
      * @throws IllegalValueException if given address string is invalid.
      */
     public Address(String address, boolean isPrivate) throws IllegalValueException {
-        String trimmedAddress = address.trim();
+        final String trimmedAddress = address.trim();
+        final Matcher matcher = ADDRESS_FORMAT.matcher(trimmedAddress);
+
         this.isPrivate = isPrivate;
-        if (!isValidAddress(trimmedAddress)) {
+        if (!matcher.matches()) {
             throw new IllegalValueException(MESSAGE_ADDRESS_CONSTRAINTS);
         }
-        block = new Block(trimmedAddress);
-        street = new Street(trimmedAddress);
-        unit = new Unit(trimmedAddress);
-        postalCode = new PostalCode(trimmedAddress);
+        block = new Block(matcher.group("block"));
+        street = new Street(matcher.group("street"));
+        unit = new Unit(matcher.group("unit"));
+        postalCode = new PostalCode(matcher.group("postcode"));
     }
 
     /**
@@ -49,10 +58,10 @@ public class Address {
 
     @Override
     public String toString() {
-        return block.toString() + ", "
-                + street.toString() + ", "
-                + unit.toString() + ", "
-                + postalCode.toString();
+        return block.value
+                + (street.value.isEmpty() ? "" : ", ") + street.value
+                + (unit.value.isEmpty() ? "" : ", ") + unit.value
+                + (postalCode.value.isEmpty() ? "" : ", ") + postalCode.value;
     }
 
     @Override

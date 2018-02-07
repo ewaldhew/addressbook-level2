@@ -2,23 +2,18 @@ package seedu.addressbook.data.person;
 
 public class Unit {
 
-    private final String value;
+    public final String value;
 
     /**
-     * Extract unit from an address. Address should be validated already.
+     * Make a new Unit object.
      *
-     * @param address full address string.
+     * @param value Unit.
      */
-    public Unit(String address) {
-        value = extractAddress(address);
-    }
-
-    public String extractAddress(String address) {
-        return address.split(",")[2];
-    }
-
-    @Override
-    public String toString() {
-        return value;
+    public Unit(String value) {
+        if (value != null) {
+            this.value = value.trim();
+        } else {
+            this.value = "";
+        }
     }
 }

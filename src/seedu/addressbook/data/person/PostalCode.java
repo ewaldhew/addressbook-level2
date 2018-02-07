@@ -2,23 +2,18 @@ package seedu.addressbook.data.person;
 
 public class PostalCode {
 
-    private final String value;
+    public final String value;
 
     /**
-     * Extract postcode from an address. Address should be validated already.
+     * Make a new PostalCode object.
      *
-     * @param address full address string.
+     * @param value PostalCode.
      */
-    public PostalCode(String address) {
-        value = extractAddress(address);
-    }
-
-    public String extractAddress(String address) {
-        return address.split(",")[3];
-    }
-
-    @Override
-    public String toString() {
-        return value;
+    public PostalCode(String value) {
+        if (value != null) {
+            this.value = value.trim();
+        } else {
+            this.value = "";
+        }
     }
 }

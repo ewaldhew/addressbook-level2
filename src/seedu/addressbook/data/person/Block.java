@@ -2,23 +2,18 @@ package seedu.addressbook.data.person;
 
 public class Block {
 
-    private final String value;
+    public final String value;
 
     /**
-     * Extract block number from an address. Address should be validated already.
+     * Make a new Block object.
      *
-     * @param address full address string.
+     * @param value Block.
      */
-    public Block(String address) {
-        value = extractAddress(address);
-    }
-
-    public String extractAddress(String address) {
-        return address.split(",")[0];
-    }
-
-    @Override
-    public String toString() {
-        return value;
+    public Block(String value) {
+        if (value != null) {
+            this.value = value.trim();
+        } else {
+            this.value = "";
+        }
     }
 }

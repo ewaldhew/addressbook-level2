@@ -2,23 +2,18 @@ package seedu.addressbook.data.person;
 
 public class Street {
 
-    private final String value;
+    public final String value;
 
     /**
-     * Extract street from an address. Address should be validated already.
+     * Make a new Street object.
      *
-     * @param address full address string.
+     * @param value Street.
      */
-    public Street(String address) {
-        value = extractAddress(address);
-    }
-
-    public String extractAddress(String address) {
-        return address.split(",")[1];
-    }
-
-    @Override
-    public String toString() {
-        return value;
+    public Street(String value) {
+        if (value != null) {
+            this.value = value.trim();
+        } else {
+            this.value = "";
+        }
     }
 }
