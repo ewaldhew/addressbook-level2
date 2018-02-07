@@ -22,13 +22,13 @@ public class Address {
             + "(?<street>[^,]+)?(?:, |$)"
             + "(?<unit>[#0-9-]+)?(?:, )?"
             + "(?<postcode>\\d{6})?";
-
     private static final Pattern ADDRESS_FORMAT = Pattern.compile(ADDRESS_VALIDATION_REGEX);
+
+    private boolean isPrivate;
     private final Block block;
     private final Street street;
     private final Unit unit;
     private final PostalCode postalCode;
-    private boolean isPrivate;
 
     /**
      * Validates given address.
