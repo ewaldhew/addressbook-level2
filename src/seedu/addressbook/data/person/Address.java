@@ -19,7 +19,7 @@ public class Address {
             + " UNIT is a number,\n"
             + " POSTAL_CODE is a six-digit number.";
     public static final String ADDRESS_VALIDATION_REGEX = "^(?<block>[\\d\\w]\\d*\\w*)?(?:, | )?"
-            + "(?<street>[^,]+)?(?:, |$)"
+            + "(?<street>[^\\d]+)(?:, |$)"
             + "(?<unit>[#0-9-]+)?(?:, )?"
             + "(?<postcode>\\d{6})?";
 
