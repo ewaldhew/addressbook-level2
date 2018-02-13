@@ -66,12 +66,29 @@ Examples:
 * `find Betsy Tim John`<br>
   Returns Any person having names `Betsy`, `Tim`, or `John`
 
+### Editing a person: `edit`
+Edits a person's details in the address book<br>
+Format: `edit INDEX [p]p/NEW_PHONE [p]e/NEW_EMAIL [p]a/NEW_ADDRESS`
+
+> Updates details for the person at the specified `INDEX`.
+> The index refers to the index number shown in the most recent listing.
+>
+> Put a `p` before the phone / email / address prefixes to mark it as `private`. `private` details can only
+> be seen using the `viewall` command.
+
+Examples:
+* `list`<br>
+  `edit 2 p/98765432 e/johnd@gmail.com a/John street, block 123, #01-01`
+  Edits the 2nd person in the address book.
+* `find Betsy`<br>
+  `edit 1 pp/1234567 e/betsycrowe@gmail.com pa/Newgate Prison t/criminal t/friend`
+  Edits the 1st person in the results of the `find` command.
+
 ### Deleting a person : `delete`
 Deletes the specified person from the address book. Irreversible.<br>
 Format: `delete INDEX`
 
-> Deletes the person at the specified `INDEX`. 
-  The index refers to the index number shown in the most recent listing.
+> Deletes the person at the specified `INDEX`.
 
 Examples: 
 * `list`<br>
