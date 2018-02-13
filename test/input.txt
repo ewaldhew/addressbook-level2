@@ -107,6 +107,20 @@
   find Charlie Betsy
 
 ##########################################################
+# test edit person command
+##########################################################
+
+# last active view: [1] betsy [2] charlie
+
+  # should catch invalid index
+  edit -1 p/1234 e/example@a.com a/Test
+
+  # should edit correct person
+  edit 1 p/21 e/test@ema.il a/Test Drive
+  list
+  find Charlie Betsy
+
+##########################################################
 # test delete person command
 ##########################################################
 
