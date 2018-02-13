@@ -17,6 +17,6 @@ public class AddressElement {
     }
 
     public String getValue(boolean withComma) {
-        return (this.value.isEmpty() && withComma ? "" : ", ") + this.value;
+        return ((!this.value.isEmpty() && withComma) ? ", " : "") + this.value;
     }
 }
