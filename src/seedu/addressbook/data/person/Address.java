@@ -7,7 +7,7 @@ import java.util.regex.Matcher;
 
 /**
  * Represents a Person's address in the address book.
- * Guarantees: immutable; is valid as declared in {@link #isValidAddress(String)}
+ * Guarantees: immutable; is valid as declared in {@link #ADDRESS_VALIDATION_REGEX}
  */
 public class Address {
 

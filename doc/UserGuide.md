@@ -35,7 +35,12 @@ Format: `help`
  
 ### Adding a person: `add`
 Adds a person to the address book<br>
-Format: `add NAME [p]p/PHONE_NUMBER [p]e/EMAIL [p]a/ADDRESS [t/TAG]...` 
+Format: `add NAME [p]p/PHONE_NUMBER [p]e/EMAIL [p]a/ADDRESS [t/TAG]...`
+`ADDRESS is a comma-separated field consisting of: BLOCK, STREET, UNIT, POSTAL_CODE`
+`BLOCK is a number with optional letter suffix,`
+`STREET is a string not containing commas,`
+`UNIT is a number,`
+`POSTAL_CODE is a six-digit number.`
  
 > Words in `UPPER_CASE` are the parameters, items in `SQUARE_BRACKETS` are optional, 
 > items with `...` after them can have multiple instances. Order of parameters are fixed. 
