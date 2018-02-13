@@ -11,6 +11,13 @@ import java.util.regex.Matcher;
  */
 public class Address {
 
+    public enum AddressElementId {
+        ADDRESS_BLOCK,
+        ADDRESS_STREET,
+        ADDRESS_UNIT,
+        ADDRESS_POSTALCODE
+    }
+
     public static final String EXAMPLE = "123, some street, #01-02, 654321";
     public static final String MESSAGE_ADDRESS_CONSTRAINTS = "Addresses are comma-separated fields consisting of the "
             + "following: BLOCK, STREET, UNIT, POSTAL_CODE\n"
@@ -22,12 +29,13 @@ public class Address {
             + "(?<street>[^\\d]+)(?:, |$)"
             + "(?<unit>[#0-9-]+)?(?:, )?"
             + "(?<postcode>\\d{6})?";
-
     private static final Pattern ADDRESS_FORMAT = Pattern.compile(ADDRESS_VALIDATION_REGEX);
+
     private final Block block;
     private final Street street;
     private final Unit unit;
     private final PostalCode postalCode;
+
     private boolean isPrivate;
 
     /**
@@ -50,10 +58,24 @@ public class Address {
     }
 
     /**
-     * Returns true if a given string is a valid person address.
+     * Used to access a certain element of the address.
+     *
+     * @param eid The element to retrieve. Use values in {@link AddressElementId}.
+     * @return null otherwise.
      */
-    public static boolean isValidAddress(String test) {
-        return test.matches(ADDRESS_VALIDATION_REGEX);
+    public AddressElement accessElement(AddressElementId eid) {
+        switch (eid) {
+        case ADDRESS_BLOCK:
+            return block;
+        case ADDRESS_UNIT:
+            return unit;
+        case ADDRESS_STREET:
+            return street;
+        case ADDRESS_POSTALCODE:
+            return postalCode;
+        default:
+            return null;
+        }
     }
 
     @Override
