@@ -84,6 +84,27 @@ public class AddressBook {
     }
 
     /**
+     * Edits a person in the address book.
+     *
+     * @throws DuplicatePersonException if an equivalent person already exists.
+     */
+    public void editPerson(ReadOnlyPerson target, Person replacement) throws DuplicatePersonException {
+        addPerson(replacement);
+        // Duplicate person throws here. Old person not removed yet.
+        try {
+            removePerson(target);
+        } catch (PersonNotFoundException e) {
+            // rollback the changes
+            try {
+                removePerson(replacement);
+            } catch (PersonNotFoundException e1) {
+                // should never fail here since we just added this in a few lines ago!
+                throw new RuntimeException();
+            }
+        }
+    }
+
+    /**
      * Returns true if an equivalent person exists in the address book.
      */
     public boolean containsPerson(ReadOnlyPerson key) {

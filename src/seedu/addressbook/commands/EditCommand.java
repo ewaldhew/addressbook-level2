@@ -1,8 +1,15 @@
 package seedu.addressbook.commands;
 
+import seedu.addressbook.common.Messages;
+import seedu.addressbook.data.exception.IllegalValueException;
 import seedu.addressbook.data.person.Address;
 import seedu.addressbook.data.person.Email;
+import seedu.addressbook.data.person.Person;
 import seedu.addressbook.data.person.Phone;
+import seedu.addressbook.data.person.ReadOnlyPerson;
+import seedu.addressbook.data.person.UniquePersonList.DuplicatePersonException;
+
+
 public class EditCommand extends Command {
 
     public static final String COMMAND_WORD = "edit";
@@ -36,5 +43,27 @@ public class EditCommand extends Command {
         replacementPhone = new Phone(phone, isPhonePrivate);
         replacementEmail = new Email(email, isEmailPrivate);
         replacementAddress = new Address(address, isAddressPrivate);
+    }
+
+    @Override
+    public CommandResult execute() {
+        try {
+            final ReadOnlyPerson target = getTargetPerson();
+            final Person replacement = new Person(
+                    target.getName(),
+                    replacementPhone,
+                    replacementEmail,
+                    replacementAddress,
+                    target.getTags()
+            );
+
+            addressBook.editPerson(target, replacement);
+            return new CommandResult(String.format(MESSAGE_EDIT_PERSON_SUCCESS, target, replacement));
+
+        } catch (IndexOutOfBoundsException ie) {
+            return new CommandResult(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+        } catch (DuplicatePersonException dpe) {
+            return new CommandResult(MESSAGE_DUPLICATE_PERSON);
+        }
     }
 }
