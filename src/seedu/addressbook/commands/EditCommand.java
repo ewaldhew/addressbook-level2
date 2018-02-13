@@ -8,6 +8,7 @@ import seedu.addressbook.data.person.Person;
 import seedu.addressbook.data.person.Phone;
 import seedu.addressbook.data.person.ReadOnlyPerson;
 import seedu.addressbook.data.person.UniquePersonList.DuplicatePersonException;
+import seedu.addressbook.data.person.UniquePersonList.PersonNotFoundException;
 
 
 public class EditCommand extends Command {
@@ -64,6 +65,8 @@ public class EditCommand extends Command {
             return new CommandResult(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         } catch (DuplicatePersonException dpe) {
             return new CommandResult(MESSAGE_DUPLICATE_PERSON);
+        } catch (PersonNotFoundException e) {
+            return new CommandResult(Messages.MESSAGE_PERSON_NOT_IN_ADDRESSBOOK);
         }
     }
 }
