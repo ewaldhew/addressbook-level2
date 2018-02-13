@@ -1,19 +1,16 @@
 package seedu.addressbook.data.person;
 
-public class Block {
-
-    public final String value;
+/**
+ * Represents a block number in a Person's address in the address book.
+ * Guarantees: immutable;
+ */
+public class Block extends AddressElement {
 
     /**
-     * Make a new Block object.
-     *
-     * @param value Block.
+     * Make a new Block object with the given value.
+     * Values must be validated before creating.
      */
     public Block(String value) {
-        if (value != null) {
-            this.value = value.trim();
-        } else {
-            this.value = "";
-        }
+        super(value);
     }
 }

@@ -1,19 +1,12 @@
 package seedu.addressbook.data.person;
 
-public class Street {
-
-    public final String value;
+public class Street extends AddressElement {
 
     /**
-     * Make a new Street object.
-     *
-     * @param value Street.
+     * Make a new Street object with the given value.
+     * Values must be validated before creating.
      */
     public Street(String value) {
-        if (value != null) {
-            this.value = value.trim();
-        } else {
-            this.value = "";
-        }
+        super(value);
     }
 }

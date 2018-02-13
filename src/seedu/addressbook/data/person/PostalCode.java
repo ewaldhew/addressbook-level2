@@ -1,19 +1,12 @@
 package seedu.addressbook.data.person;
 
-public class PostalCode {
-
-    public final String value;
+public class PostalCode extends AddressElement {
 
     /**
-     * Make a new PostalCode object.
-     *
-     * @param value PostalCode.
+     * Make a new PostalCode object with the given value.
+     * Values must be validated before creating.
      */
     public PostalCode(String value) {
-        if (value != null) {
-            this.value = value.trim();
-        } else {
-            this.value = "";
-        }
+        super(value);
     }
 }

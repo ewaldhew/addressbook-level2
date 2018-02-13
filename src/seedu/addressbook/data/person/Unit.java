@@ -1,19 +1,12 @@
 package seedu.addressbook.data.person;
 
-public class Unit {
-
-    public final String value;
+public class Unit extends AddressElement {
 
     /**
-     * Make a new Unit object.
-     *
-     * @param value Unit.
+     * Make a new Unit object with the given value.
+     * Values must be validated before creating.
      */
     public Unit(String value) {
-        if (value != null) {
-            this.value = value.trim();
-        } else {
-            this.value = "";
-        }
+        super(value);
     }
 }
