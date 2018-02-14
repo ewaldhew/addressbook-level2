@@ -10,7 +10,9 @@ import seedu.addressbook.data.person.ReadOnlyPerson;
 import seedu.addressbook.data.person.UniquePersonList.DuplicatePersonException;
 import seedu.addressbook.data.person.UniquePersonList.PersonNotFoundException;
 
-
+/**
+ * Edits a person in the address book.
+ */
 public class EditCommand extends Command {
 
     public static final String COMMAND_WORD = "edit";
