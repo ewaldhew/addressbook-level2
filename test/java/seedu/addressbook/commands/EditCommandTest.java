@@ -5,9 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -21,17 +19,12 @@ import seedu.addressbook.data.person.Name;
 import seedu.addressbook.data.person.Person;
 import seedu.addressbook.data.person.Phone;
 import seedu.addressbook.data.person.ReadOnlyPerson;
-import seedu.addressbook.data.person.UniquePersonList;
-import seedu.addressbook.data.person.UniquePersonList.DuplicatePersonException;
 import seedu.addressbook.data.person.UniquePersonList.PersonNotFoundException;
 import seedu.addressbook.data.tag.UniqueTagList;
 import seedu.addressbook.ui.TextUi;
 import seedu.addressbook.util.TestUtil;
 
 public class EditCommandTest {
-    private static final List<ReadOnlyPerson> EMPTY_PERSON_LIST = Collections.emptyList();
-    private static final Set<String> EMPTY_STRING_LIST = Collections.emptySet();
-
     private AddressBook emptyAddressBook;
     private AddressBook addressBook;
 
