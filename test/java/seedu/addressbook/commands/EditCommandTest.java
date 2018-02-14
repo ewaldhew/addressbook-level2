@@ -1,6 +1,8 @@
 package seedu.addressbook.commands;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.Collections;
@@ -144,40 +146,25 @@ public class EditCommandTest {
         fail(error);
     }
 
-//    @Test
-//    public void editCommand_validData_correctlyConstructed() throws Exception {
-//        EditCommand command = new EditCommand(Index.EXAMPLE, Phone.EXAMPLE, true, Email.EXAMPLE, false,
-//                Address.EXAMPLE, true, EMPTY_STRING_LIST);
-//        ReadOnlyPerson p = command.getPerson();
-//
-//        // TODO: edit comparison of tags to person.equals and equality methods to
-//        // individual fields that compare privacy to simplify this
-//        assertEquals(Name.EXAMPLE, p.getName().fullName);
-//        assertEquals(Phone.EXAMPLE, p.getPhone().value);
-//        assertTrue(p.getPhone().isPrivate());
-//        assertEquals(Email.EXAMPLE, p.getEmail().value);
-//        assertFalse(p.getEmail().isPrivate());
-//        assertEquals(Address.EXAMPLE, p.getAddress().value);
-//        assertTrue(p.getAddress().isPrivate());
-//        boolean isTagListEmpty = !p.getTags().iterator().hasNext();
-//        assertTrue(isTagListEmpty);
-//    }
+    @Test
+    public void editCommand_addressBookAlreadyContainsPerson_addressBookUnmodified() throws Exception {
+        Person p = TestUtil.generateTestPerson();
+        addressBook.addPerson(p);
+        List<ReadOnlyPerson> peopleList = addressBook.getAllPersons().immutableListView();
+        int index = peopleList.size();
+        ReadOnlyPerson dupe = peopleList.get(0);
+        EditCommand command = new EditCommand(index, 
+                                              dupe.getPhone().toString(), dupe.getPhone().isPrivate(),
+                                              dupe.getEmail().toString(), dupe.getEmail().isPrivate(),
+                                              dupe.getAddress().toString(), dupe.getAddress().isPrivate());
+        command.setData(addressBook, peopleList);
+        CommandResult result = command.execute();
 
-//    @Test
-//    public void editCommand_addressBookAlreadyContainsPerson_addressBookUnmodified() throws Exception {
-//        Person p = TestUtil.generateTestPerson();
-//        addressBook.addPerson(p);
-//        int index = addressBook.getAllPersons().immutableListView().size();
-//        EditCommand command = new EditCommand(index, );
-//        command.setData(book, EMPTY_PERSON_LIST);
-//        CommandResult result = command.execute();
-//
-//        assertFalse(result.getRelevantPersons().isPresent());
-//        assertEquals(EditCommand.MESSAGE_DUPLICATE_PERSON, result.feedbackToUser);
-//        people = addressBook.getAllPersons();
-//        assertTrue(people.contains(p));
-//        assertEquals(1, people.immutableListView().size());
-//    }
+        assertFalse(result.getRelevantPersons().isPresent());
+        assertEquals(EditCommand.MESSAGE_DUPLICATE_PERSON, result.feedbackToUser);
+        assertTrue(peopleList.contains(p));
+        assertEquals(index, peopleList.size());
+    }
 
     @Test
     public void execute_emptyAddressBook_returnsPersonNotFoundMessage() {

@@ -16,6 +16,7 @@ import seedu.addressbook.commands.AddCommand;
 import seedu.addressbook.commands.ClearCommand;
 import seedu.addressbook.commands.Command;
 import seedu.addressbook.commands.DeleteCommand;
+import seedu.addressbook.commands.EditCommand;
 import seedu.addressbook.commands.ExitCommand;
 import seedu.addressbook.commands.FindCommand;
 import seedu.addressbook.commands.HelpCommand;
@@ -209,11 +210,11 @@ public class ParserTest {
             "add ",
             "add wrong args format",
             // no phone prefix
-            String.format("add $s $s e/$s a/$s", Name.EXAMPLE, Phone.EXAMPLE, Email.EXAMPLE, Address.EXAMPLE),
+            String.format("add %s %s e/%s a/%s", Name.EXAMPLE, Phone.EXAMPLE, Email.EXAMPLE, Address.EXAMPLE),
             // no email prefix
-            String.format("add $s p/$s $s a/$s", Name.EXAMPLE, Phone.EXAMPLE, Email.EXAMPLE, Address.EXAMPLE),
+            String.format("add %s p/%s %s a/%s", Name.EXAMPLE, Phone.EXAMPLE, Email.EXAMPLE, Address.EXAMPLE),
             // no address prefix
-            String.format("add $s p/$s e/$s $s", Name.EXAMPLE, Phone.EXAMPLE, Email.EXAMPLE, Address.EXAMPLE)
+            String.format("add %s p/%s e/%s %s", Name.EXAMPLE, Phone.EXAMPLE, Email.EXAMPLE, Address.EXAMPLE)
         };
         final String resultMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE);
         parseAndAssertIncorrectWithMessage(resultMessage, inputs);
@@ -230,7 +231,7 @@ public class ParserTest {
         final String invalidTagArg = "t/invalid_-[.tag";
 
         // address can be any string, so no invalid address
-        final String addCommandFormatString = "add $s $s $s a/" + Address.EXAMPLE;
+        final String addCommandFormatString = "add %s %s %s a/" + Address.EXAMPLE;
 
         // test each incorrect person data field argument individually
         final String[] inputs = {
@@ -267,6 +268,58 @@ public class ParserTest {
 
         final AddCommand result = parseAndAssertCommandType(input, AddCommand.class);
         assertEquals(result.getPerson(), testPerson);
+    }
+
+    /*
+     * Tests for edit person command ==============================================================================
+     */
+
+    @Test
+    public void parse_editCommandInvalidArgs_errorMessage() {
+        final String[] inputs = {
+            "edit",
+            "edit ",
+            "edit wrong args format",
+            // no phone prefix
+            String.format("edit 1 %s e/%s a/%s", Phone.EXAMPLE, Email.EXAMPLE, Address.EXAMPLE),
+            // no email prefix
+            String.format("edit 1 p/%s %s a/%s", Phone.EXAMPLE, Email.EXAMPLE, Address.EXAMPLE),
+            // no address prefix
+            String.format("edit 1 p/%s e/%s %s", Phone.EXAMPLE, Email.EXAMPLE, Address.EXAMPLE)
+        };
+        final String resultMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE);
+        parseAndAssertIncorrectWithMessage(resultMessage, inputs);
+    }
+
+    @Test
+    public void parse_editCommandInvalidPersonDataInArgs_errorMessge() {
+        final String invalidPhoneArg = "p/not__numbers";
+        final String validPhoneArg = "p/" + Phone.EXAMPLE;
+        final String invalidEmailArg = "e/notAnEmail123";
+        final String validEmailArg = "e/" + Email.EXAMPLE;
+        
+        // address can be any string, so no invalid address
+        final String editCommandFormatString = "edit 1 %s %s a/" + Address.EXAMPLE;
+
+        // test each incorrect person data field argument individually
+        final String[] inputs = {
+                // invalid phone
+                String.format(editCommandFormatString, invalidPhoneArg, validEmailArg),
+                // invalid email
+                String.format(editCommandFormatString, validPhoneArg, invalidEmailArg)
+        };
+        for (String input : inputs) {
+            parseAndAssertCommandType(input, IncorrectCommand.class);
+        }
+    }
+
+    @Test
+    public void parse_editCommandNumericArg_indexParsedCorrectly() {
+        final int testIndex = 5;
+        final String input = 
+        		String.format("edit %d p/%s e/%s a/%s", testIndex, Phone.EXAMPLE, Email.EXAMPLE, Address.EXAMPLE);
+        final EditCommand result = parseAndAssertCommandType(input, EditCommand.class);
+        assertEquals(result.getTargetIndex(), testIndex);
     }
 
     private static Person generateTestPerson() {
