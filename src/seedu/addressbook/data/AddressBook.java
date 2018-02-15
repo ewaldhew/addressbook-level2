@@ -89,20 +89,19 @@ public class AddressBook {
      * @throws DuplicatePersonException if an equivalent person already exists.
      */
     public void editPerson(ReadOnlyPerson target, Person replacement)
-            throws DuplicatePersonException, PersonNotFoundException {
-        addPerson(replacement);
-        // Duplicate person throws here. Old person not removed yet.
+            throws PersonNotFoundException, DuplicatePersonException {
+        removePerson(target);
+        // Person not found throws here.
+
         try {
-            removePerson(target);
-        } catch (PersonNotFoundException pnfe) {
-            // rollback the changes
+            addPerson(replacement);
+        } catch (DuplicatePersonException dpe) {
             try {
-                removePerson(replacement);
-            } catch (PersonNotFoundException e1) {
-                // should never fail here since we just added this in a few lines ago!
-                throw new RuntimeException();
+                addPerson((Person)target);
+            } catch (DuplicatePersonException e1) {
+                throw new RuntimeException("Previously added duplicate person!");
             }
-            throw pnfe;
+            throw dpe; // rethrow for alert user.
         }
     }
 

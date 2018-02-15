@@ -185,6 +185,27 @@ public class EditCommandTest {
         assertEditSuccessful(middleIndex, addressBook, listWithSurnameDoe);
     }
 
+    @Test
+    public void execute_validIndex_onlyChangePhone_personIsEdited() throws Exception {
+        Person johnDoe = new Person(new Name("John Doe"), new Phone("5432198", false),
+                new Email("john@doe.com", false), new Address("395C Ben Road", false), new UniqueTagList());
+        assertEditSuccessful(1, johnDoe, addressBook, listWithEveryone);
+    }
+
+    @Test
+    public void execute_validIndex_onlyChangeEmail_personIsEdited() throws Exception {
+        Person johnDoe = new Person(new Name("John Doe"), new Phone("61234567", false),
+                new Email("other@doe.com", false), new Address("395C Ben Road", false), new UniqueTagList());
+        assertEditSuccessful(1, johnDoe, addressBook, listWithEveryone);
+    }
+
+    @Test
+    public void execute_validIndex_onlyChangeAddress_personIsEdited() throws Exception {
+        Person johnDoe = new Person(new Name("John Doe"), new Phone("61234567", false),
+                new Email("john@doe.com", false), new Address("991 Test Drive C", false), new UniqueTagList());
+        assertEditSuccessful(1, johnDoe, addressBook, listWithEveryone);
+    }
+
     /**
      * Executes the command, and checks that the execution was what we had expected.
      */
@@ -229,13 +250,11 @@ public class EditCommandTest {
      *
      * @throws PersonNotFoundException if the selected person is not in the address book
      */
-    private void assertEditSuccessful(int targetVisibleIndex, AddressBook addressBook,
-                                      List<ReadOnlyPerson> displayList)
+    private void assertEditSuccessful(int targetVisibleIndex, Person replacement,
+                                      AddressBook addressBook, List<ReadOnlyPerson> displayList)
             throws IllegalValueException, PersonNotFoundException {
 
         ReadOnlyPerson targetPerson = displayList.get(targetVisibleIndex - TextUi.DISPLAYED_INDEX_OFFSET);
-        Person replacement = new Person(targetPerson.getName(), new Phone("11111", false),
-                new Email("new@doe.com", false), new Address("55G New Road", false), new UniqueTagList());
 
         AddressBook expectedAddressBook = TestUtil.clone(addressBook);
         expectedAddressBook.editPerson(targetPerson, replacement);
@@ -245,5 +264,24 @@ public class EditCommandTest {
 
         EditCommand command = createEditCommand(targetVisibleIndex, replacement, actualAddressBook, displayList);
         assertCommandBehaviour(command, expectedMessage, expectedAddressBook, actualAddressBook);
+    }
+
+    /**
+     * Asserts that the person at the specified index can be successfully edited.
+     * <p>
+     * The addressBook passed in will not be modified (no side effects).
+     *
+     * @throws PersonNotFoundException if the selected person is not in the address book
+     */
+    private void assertEditSuccessful(int targetVisibleIndex, AddressBook addressBook,
+                                      List<ReadOnlyPerson> displayList)
+            throws IllegalValueException, PersonNotFoundException {
+
+        ReadOnlyPerson targetPerson = displayList.get(targetVisibleIndex - TextUi.DISPLAYED_INDEX_OFFSET);
+
+        Person replacement = new Person(targetPerson.getName(), new Phone("11111", false),
+                new Email("new@doe.com", false), new Address("55G New Road", false), new UniqueTagList());
+
+        assertEditSuccessful(targetVisibleIndex, replacement, addressBook, displayList);
     }
 }
